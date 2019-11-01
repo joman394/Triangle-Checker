@@ -1,0 +1,75 @@
+use std::io;
+use std::io::prelude::*;
+
+fn pause() {
+    let mut stdin = io::stdin();
+    let mut stdout = io::stdout();
+
+    // We want the cursor to stay at the end of the line, so we print without a newline and flush manually.
+    write!(stdout, "Press any key to continue...").unwrap();
+    stdout.flush().unwrap();
+
+    // Read a single byte and discard
+    let _ = stdin.read(&mut [0u8]).unwrap();
+}
+
+fn main() {
+    let mut angle_array = vec![];
+
+    println!("Enter the first angle of the triangle");
+    let mut angle1 = String::new();
+    io::stdin().read_line(&mut angle1)
+        .ok()
+        .expect("Couldn't read line");
+
+    println!("Enter the second angle of the triangle");
+    let mut angle2 = String::new();
+    io::stdin().read_line(&mut angle2)
+        .ok()
+        .expect("Couldn't read line");
+
+    println!("Enter the third angle of the triangle");
+    let mut angle3 = String::new();
+    io::stdin().read_line(&mut angle3)
+        .ok()
+        .expect("Couldn't read line");
+
+    let trimmed_angle = angle1.trim();
+    match trimmed_angle.parse::<i32>() {
+    Ok(i) => angle_array.push(i),
+    Err(..) => println!("invalid input"),
+    };
+
+    let trimmed_angle = angle2.trim();
+    match trimmed_angle.parse::<i32>() {
+    Ok(i) => angle_array.push(i),
+    Err(..) => println!("invalid input"),
+    };
+
+    let trimmed_angle = angle3.trim();
+    match trimmed_angle.parse::<i32>() {
+    Ok(i) => angle_array.push(i),
+    Err(..) => println!("invalid input"),
+    };
+
+    println!("Angle 1 is {:?}", angle_array[0]);
+    println!("Angle 2 is {:?}", angle_array[1]);
+    println!("Angle 3 is {:?}", angle_array[2]);
+
+    let angle_sum = angle_array.iter().fold(0, |a, &b| a + b);
+
+    if angle_sum == 180 {
+    println!("Your angles add up to 180. This is a valid triangle.");
+
+        if angle_array[0] == 90 || angle_array[1] == 90 || angle_array[2] == 90 {
+            println!("This is actually a right triangle!");
+        } else if angle_array[0] > 90 || angle_array[1] > 90 || angle_array[2] > 90 {
+            println!("This is actually an obtuse triangle!");
+        } else {
+            println!("This is actually an acture triangle!");
+        }
+    } else{
+        println!("Error! Your angles only add up to {}. Please re-enter angles that add up to 180.", angle_sum);
+    }
+    pause();
+}
